@@ -14,7 +14,7 @@ def load_csv(data):
             temp = list()
             if not row:
                 continue
-            elif len(row) == 1:
+            if len(row) == 1:
                 dataset.append(float(row[0].strip()))
             else:
                 for s in row:
@@ -51,10 +51,10 @@ def predict(row, coefficients):
         return 0
     
 # Estimate logistic regression coefficients using stochastic gradient descent
-def coefficients_sgd(X_train,y_train, l_rate, n_epoch):
-    coef = [0.0 for i in range(len(X_train[0]))]
+def coefficients_sgd(x_train,y_train, l_rate, n_epoch):
+    coef = [0.0 for i in range(len(x_train[0]))]
     for _ in range(n_epoch):
-        for i,row in enumerate(X_train):
+        for i,row in enumerate(x_train):
             yhat = predict(row, coef)
             error = y_train[i] - yhat
             for i in range(len(row)):
@@ -63,15 +63,14 @@ def coefficients_sgd(X_train,y_train, l_rate, n_epoch):
     return coef
 
 # Linear Regression Algorithm With Stochastic Gradient Descent
-def logistic_regression(X_train,y_train,X_test,y_test, l_rate, n_epoch):
+def logistic_regression(x_train,y_train,x_test,y_test, l_rate, n_epoch):
     predictions = list()
-    coef = coefficients_sgd(X_train,y_train, l_rate, n_epoch)
-    for row in X_test:
+    coef = coefficients_sgd(x_train,y_train, l_rate, n_epoch)
+    for row in x_test:
         yhat = predict(row, coef)
         yhat = round(yhat)
         predictions.append(yhat)
     return accuracy_metric(y_test, predictions)
-
 
 
 if __name__ == '__main__':  
@@ -87,7 +86,7 @@ if __name__ == '__main__':
     label_file = 'data/moon_labels_{}.csv'.format(args.n_size)
     dataset = load_csv(data_file)
     labels = load_csv(label_file)
-    X_train,y_train,X_test,y_test = train_test_split(dataset,labels)
+    x_train,y_train,x_test,y_test = train_test_split(dataset,labels)
     # evaluate algorithm
-    scores = logistic_regression(X_train,y_train,X_test,y_test, args.l_rate, args.n_epochs)
+    scores = logistic_regression(x_train,y_train,x_test,y_test, args.l_rate, args.n_epochs)
     print('Scores: %s' % scores)
