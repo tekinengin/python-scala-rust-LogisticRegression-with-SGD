@@ -4,6 +4,7 @@ from random import randrange
 from csv import reader
 from math import exp
 import argparse
+import time 
 
 # Load a CSV file
 def load_csv(data):
@@ -66,6 +67,7 @@ def coefficients_sgd(x_train,y_train, l_rate, n_epoch):
 def logistic_regression(x_train,y_train,x_test,y_test, l_rate, n_epoch):
     predictions = list()
     coef = coefficients_sgd(x_train,y_train, l_rate, n_epoch)
+    
     for row in x_test:
         yhat = predict(row, coef)
         yhat = round(yhat)
@@ -81,12 +83,21 @@ if __name__ == '__main__':
     parser.add_argument('--n_epochs', type=int, help='number of epochs',default=5)
     args = parser.parse_args()
     seed(20)
+    start = time.time() * 1000
     # load and prepare data
     data_file = 'data/moon_data_{}.csv'.format(args.n_size)
     label_file = 'data/moon_labels_{}.csv'.format(args.n_size)
     dataset = load_csv(data_file)
     labels = load_csv(label_file)
-    x_train,y_train,x_test,y_test = train_test_split(dataset,labels)
+    read = time.time() * 1000
+    #x_train,y_train,x_test,y_test = train_test_split(dataset,labels)
+    x_train = dataset[:int(args.n_size * 0.7)]
+    y_train = labels[:int(args.n_size * 0.7)]
+    x_test = dataset[-int(args.n_size * 0.3):]
+    y_test = labels[-int(args.n_size * 0.3):]
     # evaluate algorithm
+    split = time.time() * 1000
     scores = logistic_regression(x_train,y_train,x_test,y_test, args.l_rate, args.n_epochs)
+    sgd = time.time() * 1000
     print('Scores: %s' % scores)
+    print('{},{},{}'.format(read-start,split-read,sgd-split))

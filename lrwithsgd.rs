@@ -59,6 +59,7 @@ fn predict(row:&Vec<f64>, coefficients:&Vec<f64>) -> f64 {
 // Estimate logistic regression coefficients using stochastic gradient descent
 fn coefficients_sgd(x_train:&Vec<Vec<f64>>, y_train:&Vec<Vec<f64>>, l_rate:f64, n_epoch:i32) -> Vec<f64> {
     let mut coef:Vec<f64> = vec![0.0; x_train[0].len()];
+    
     for _ in 0..n_epoch {
         for (i,  row) in x_train.iter().enumerate(){
             let yhat = predict(row, &coef);

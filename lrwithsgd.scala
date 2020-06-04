@@ -90,16 +90,24 @@ object lrwithsgd{
 		}
 
 		Random.setSeed(1)
-
+		var start = System.currentTimeMillis()
 		val data_file = "data/moon_data_%d.csv".format(n_size)
 		val label_file = "data/moon_labels_%d.csv".format(n_size)
 
 		var dataset = load_csv(data_file)
 		var labels = load_csv(label_file)
-
-		var data = train_test_split(dataset,labels)
+		var read = System.currentTimeMillis()
+		var data = new Array[ArrayBuffer[ArrayBuffer[Double]]](4)
+		data(0) = dataset
+		data(1) = labels
+		data(2) = dataset
+		data(3) = dataset
+		//var data = train_test_split(dataset,labels)
+		var split = System.currentTimeMillis()
 		var score = logistic_regression(data, l_rate, n_epoch)
+		var sgd = System.currentTimeMillis()
 		println(score)
+		println("%d,%d,%d".format(read-start,split-read,sgd-split))
 	}
 
 }
