@@ -20,8 +20,8 @@ object lrwithsgd{
 	}
 
 	def train_test_split(dataset : ArrayBuffer[ArrayBuffer[Double]],labels : ArrayBuffer[ArrayBuffer[Double]], ratio:Double = 0.3): Array[ArrayBuffer[ArrayBuffer[Double]]] = {
-	  var (dataset_train, dataset_test) = (dataset.clone(), ArrayBuffer[ArrayBuffer[Double]]())
-	  var (label_train, label_test) = (labels.clone(), ArrayBuffer[ArrayBuffer[Double]]())
+	  var (dataset_train, dataset_test) = (dataset.clone(), new ArrayBuffer[ArrayBuffer[Double]]((dataset.length * ratio).toInt))
+	  var (label_train, label_test) = (labels.clone(), new ArrayBuffer[ArrayBuffer[Double]]((labels.length * ratio).toInt))
 	  while (dataset_test.length < (dataset.length * ratio)){
 	    var index = Random.nextInt(dataset_train.length)
 	    dataset_test.append(dataset_train.remove(index))
@@ -66,7 +66,7 @@ object lrwithsgd{
 
 	// Linear Regression Algorithm With Stochastic Gradient Descent
 	def logistic_regression(data:Array[ArrayBuffer[ArrayBuffer[Double]]], l_rate:Double, n_epoch:Int): Double = {
-	  var predictions = ArrayBuffer[Double]()
+	  var predictions = new ArrayBuffer[Double](data(2).length)
 	  var coef = coefficients_sgd(data(0),data(1), l_rate, n_epoch)
 	  for (row <- data(2)) {
 	    var yhat = Math.round(predict(row, coef))
@@ -92,17 +92,19 @@ object lrwithsgd{
 		Random.setSeed(1)
 		var start = System.currentTimeMillis()
 		val data_file = "data/moon_data_%d.csv".format(n_size)
+		println("here")
 		val label_file = "data/moon_labels_%d.csv".format(n_size)
-
-		var dataset = load_csv(data_file)
-		var labels = load_csv(label_file)
+		println("here1")
+		val dataset = load_csv(data_file)
+		val labels = load_csv(label_file)
 		var read = System.currentTimeMillis()
-		var data = new Array[ArrayBuffer[ArrayBuffer[Double]]](4)
-		data(0) = dataset
-		data(1) = labels
-		data(2) = dataset
-		data(3) = dataset
 		//var data = train_test_split(dataset,labels)
+		val data = new Array[ArrayBuffer[ArrayBuffer[Double]]](4);
+		data(0) = dataset.slice(0,(n_size * 0.7).toInt);
+		data(1) = labels.slice(0,(n_size * 0.7).toInt);
+		data(2) = dataset.slice((n_size * 0.7).toInt, n_size);
+		data(3) = labels.slice((n_size * 0.7).toInt, n_size);
+
 		var split = System.currentTimeMillis()
 		var score = logistic_regression(data, l_rate, n_epoch)
 		var sgd = System.currentTimeMillis()
