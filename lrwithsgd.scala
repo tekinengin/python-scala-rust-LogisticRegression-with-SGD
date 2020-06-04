@@ -97,13 +97,9 @@ object lrwithsgd{
 		println("here1")
 		val dataset = load_csv(data_file)
 		val labels = load_csv(label_file)
+
 		var read = System.currentTimeMillis()
-		//var data = train_test_split(dataset,labels)
-		val data = new Array[ArrayBuffer[ArrayBuffer[Double]]](4);
-		data(0) = dataset.slice(0,(n_size * 0.7).toInt);
-		data(1) = labels.slice(0,(n_size * 0.7).toInt);
-		data(2) = dataset.slice((n_size * 0.7).toInt, n_size);
-		data(3) = labels.slice((n_size * 0.7).toInt, n_size);
+		var data = train_test_split(dataset,labels)
 
 		var split = System.currentTimeMillis()
 		var score = logistic_regression(data, l_rate, n_epoch)
