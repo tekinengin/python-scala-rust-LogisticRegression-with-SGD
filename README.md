@@ -3,12 +3,15 @@ This Repo aims to compare performance of Python, Scala and Rust on Moons data wi
 
 This projects aims to implement a Logistic Regression algorithms with SGD from scratch with Rust, Scala and Python3 and compare CPU and Memory Performances.
 
+Software Versions:
 rustc 1.43.1 (8d69840ab 2020-05-04)
 
 Scala code runner version 2.11.12 -- Copyright 2002-2017, LAMP/EPFL
 OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-2ubuntu218.04)
 
 Python 3.6.9 - Cpython
+
+Linux 5.3.0-53-generic x86_64
 
 Hardware Specs:
 CPU:
