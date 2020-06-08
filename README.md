@@ -23,3 +23,10 @@ Speed: 1600 MT/s
 
 Hard Drive:
 APPLE SSD SM0512F
+
+Data: Moon Data set # Features has dimensions of (N,2), Binary Classification
+
+args: 
+--n_size[1000/10000/100000/1000000] #Data Size 
+--l_rate[Float]
+--n_epochs[Integer]
