@@ -30,3 +30,12 @@ args:
 --n_size[1000/10000/100000/1000000] #Data Size 
 --l_rate[Float]
 --n_epochs[Integer]
+
+example usage:
+Python3 : python3 lrwithsgd.py --n_size=10000 --l_rate=0.1 --n_epoch=5
+
+Scala: scalac lrwithsgd.scala & scala -J-Xmx1g lrwithsgd --n_size=10000 --l_rate=0.1 --n_epoch=5
+
+Rust: ./lrwithsgd --n_size=10000 --l_rate=0.1 --n_epoch=5
+
+
