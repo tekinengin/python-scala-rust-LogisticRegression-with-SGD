@@ -20,13 +20,18 @@ object lrwithsgd{
 	}
 
 	def train_test_split(dataset : ArrayBuffer[ArrayBuffer[Double]],labels : ArrayBuffer[ArrayBuffer[Double]], ratio:Double = 0.3): Array[ArrayBuffer[ArrayBuffer[Double]]] = {
-	  var (dataset_train, dataset_test) = (dataset.clone(), new ArrayBuffer[ArrayBuffer[Double]]((dataset.length * ratio).toInt))
+	  /*var (dataset_train, dataset_test) = (dataset.clone(), new ArrayBuffer[ArrayBuffer[Double]]((dataset.length * ratio).toInt))
 	  var (label_train, label_test) = (labels.clone(), new ArrayBuffer[ArrayBuffer[Double]]((labels.length * ratio).toInt))
 	  while (dataset_test.length < (dataset.length * ratio)){
 	    var index = Random.nextInt(dataset_train.length)
 	    dataset_test.append(dataset_train.remove(index))
 	    label_test.append(label_train.remove(index))
-	  }
+	  }*/
+
+	val dataset_train = dataset.slice((dataset.length * ratio).toInt,dataset.length)
+	val label_train = labels.slice((dataset.length * ratio).toInt,dataset.length)
+	val dataset_test = dataset.slice(0,(dataset.length * ratio).toInt)
+	val label_test = labels.slice(0,(dataset.length * ratio).toInt)
 	  Array[ArrayBuffer[ArrayBuffer[Double]]](dataset_train, label_train,dataset_test, label_test)
 	}
 
@@ -92,9 +97,9 @@ object lrwithsgd{
 		Random.setSeed(1)
 		var start = System.currentTimeMillis()
 		val data_file = "data/moon_data_%d.csv".format(n_size)
-		println("here")
+		//println("here")
 		val label_file = "data/moon_labels_%d.csv".format(n_size)
-		println("here1")
+		//println("here1")
 		val dataset = load_csv(data_file)
 		val labels = load_csv(label_file)
 

@@ -1,6 +1,8 @@
 use csv::Error;
 use rand::distributions::{Distribution, Uniform};
 use clap::{Arg, App};
+use std::time::Instant;
+
 
 fn load_csv(filename : String) -> Result<Vec<Vec<f64>>,Error>{
     
@@ -19,11 +21,18 @@ fn load_csv(filename : String) -> Result<Vec<Vec<f64>>,Error>{
 }
 
 fn train_test_split(dataset: &Vec<Vec<f64>>, labels: &Vec<Vec<f64>>, ratio : f64) -> [Vec<Vec<f64>>; 4] {
-    let mut dataset_test:Vec<Vec<f64>> = vec![];
-    let mut labels_test:Vec<Vec<f64>> = vec![];
-    let mut dataset_train = dataset.clone();
-    let mut labels_train = labels.clone();
+    //let mut dataset_test:Vec<Vec<f64>> = Vec::with_capacity((dataset.len() as f64 * ratio) as usize);
+    //let mut labels_test:Vec<Vec<f64>> = Vec::with_capacity((labels.len() as f64 * ratio) as usize);
+    //let mut dataset_train = dataset.clone();
+    //let mut labels_train = labels.clone();
+    let mut dataset_test:Vec<Vec<f64>> = dataset[0..(dataset.len() as f64 * ratio) as usize].to_vec();
+    let mut labels_test:Vec<Vec<f64>> = labels[0..(dataset.len() as f64 * ratio) as usize].to_vec();
+    let mut dataset_train = dataset[(dataset.len() as f64 * ratio) as usize..dataset.len()].to_vec();
+    let mut labels_train = labels[(dataset.len() as f64 * ratio) as usize..dataset.len()].to_vec();
 
+    //println!("{}",dataset_test.len());
+    //println!("{}",dataset_train.len());
+    /*
     let mut rng = rand::thread_rng();
 
     loop {
@@ -34,7 +43,10 @@ fn train_test_split(dataset: &Vec<Vec<f64>>, labels: &Vec<Vec<f64>>, ratio : f64
             break;
         }
     }
-
+    */
+    println!("{}",dataset_test.len());
+    println!("{}",dataset_train.len());
+    
     [dataset_train,labels_train,dataset_test,labels_test]
 }
 
@@ -75,8 +87,11 @@ fn coefficients_sgd(x_train:&Vec<Vec<f64>>, y_train:&Vec<Vec<f64>>, l_rate:f64, 
 // Linear Regression Algorithm With Stochastic Gradient Descent
 fn logistic_regression(x_train:&Vec<Vec<f64>>, y_train:&Vec<Vec<f64>>, x_test:&Vec<Vec<f64>>, y_test:&Vec<Vec<f64>>, l_rate:f64, n_epoch:i32) -> f64 {
     let mut predictions: Vec<f64> = vec![];
+    println!("{}",x_train.len());
+    println!("{}",x_test.len());
+  
     let coef = coefficients_sgd(x_train, y_train, l_rate, n_epoch);
-
+    
     for row in x_test {
         let mut yhat = predict(&row, &coef);
         yhat = f64::round(yhat);
@@ -97,15 +112,30 @@ fn main() -> Result<(),Error> {
     let n_epoch = matches.value_of("n_epoch").unwrap_or("5").parse::<i32>().unwrap();
     let ratio = 0.3;
 
+    
+
     let data_file = format!("data/moon_data_{}.csv",n_size);
     let label_file = format!("data/moon_labels_{}.csv",n_size);
+
+    let start = Instant::now();
 
     let dataset = load_csv(data_file)?;
     let labels = load_csv(label_file)?;
 
+    let read = Instant::now();
+
     let data = train_test_split(&dataset,&labels,ratio);
+
+    let split = Instant::now();
+
     let score = logistic_regression(&data[0],&data[1],&data[2],&data[3],l_rate,n_epoch);
 
+    let lr = Instant::now();
+
+
+    println!("read - {:?}",read.saturating_duration_since(start));
+    println!("split - {:?}",split.saturating_duration_since(read));
+    println!("lr - {:?}",lr.saturating_duration_since(split));
     println!("{}",score);
     Ok(())
 }

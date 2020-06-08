@@ -32,12 +32,19 @@ def accuracy_metric(actual, predicted):
     return correct / float(len(actual)) * 100.0
 
 def train_test_split(dataset, labels, ratio=0.3):
+    """
     dataset_train, dataset_test = list(dataset), list()
     label_train, label_test = list(labels), list()
     while len(dataset_test) < (len(dataset) * ratio):
         index = randrange(len(dataset_train))
         dataset_test.append(dataset_train.pop(index))
         label_test.append(label_train.pop(index))
+    """
+    dataset_train = dataset[:int(args.n_size * 0.7)]
+    label_train = labels[:int(args.n_size * 0.7)]
+    dataset_test = dataset[-int(args.n_size * 0.3):]
+    label_test = labels[-int(args.n_size * 0.3):]
+    
     return dataset_train,label_train,dataset_test,label_test
 
 # Make a prediction with coefficients
@@ -90,11 +97,7 @@ if __name__ == '__main__':
     dataset = load_csv(data_file)
     labels = load_csv(label_file)
     read = time.time() * 1000
-    #x_train,y_train,x_test,y_test = train_test_split(dataset,labels)
-    x_train = dataset[:int(args.n_size * 0.7)]
-    y_train = labels[:int(args.n_size * 0.7)]
-    x_test = dataset[-int(args.n_size * 0.3):]
-    y_test = labels[-int(args.n_size * 0.3):]
+    x_train,y_train,x_test,y_test = train_test_split(dataset,labels)
     # evaluate algorithm
     split = time.time() * 1000
     scores = logistic_regression(x_train,y_train,x_test,y_test, args.l_rate, args.n_epochs)
