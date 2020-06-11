@@ -34,6 +34,10 @@ args:
 --l_rate[Float]
 --n_epochs[Integer]
 
+Compile Instructions:
+Rust: cargo build --release
+Scalac: scalac lrwithsgd.scala
+
 example usage:
 Python3 : python3 lrwithsgd.py --n_size=10000 --l_rate=0.1 --n_epoch=5
 
