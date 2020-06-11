@@ -45,4 +45,12 @@ Scala: scalac lrwithsgd.scala & scala -J-Xmx1g lrwithsgd --n_size=10000 --l_rate
 
 Rust: ./lrwithsgd --n_size=10000 --l_rate=0.1 --n_epoch=5
 
+RESULTS:
+
+Program - Elapsed CPU Time: Time elapsed by CPU for complete running time including compile/interpretation
+Read - Elapsed CPU Time: Time elapsed by CPU to read .csv file into List/Vec/ArrayBuffer
+SGD - Elapsed CPU Time: Time elapsed by CPU to run SGD algorithm for 5 epochs.
+Max Memory Usage: Max Memory Used while running program
+Note: CPU Time is Elapsed by \textit{perf stat} and max memory usage is elapsed by \textit{/usr/bin/time}
+
 
