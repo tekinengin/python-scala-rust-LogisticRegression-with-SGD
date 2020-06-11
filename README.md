@@ -49,11 +49,19 @@ RESULTS:
 
 Program - Elapsed CPU Time: Time elapsed by CPU for complete running time including compile/interpretation
 
+![](/charts/task_time.png)
+
 Read - Elapsed CPU Time: Time elapsed by CPU to read .csv file into List/Vec/ArrayBuffer
+
+![](/charts/read.png)
 
 SGD - Elapsed CPU Time: Time elapsed by CPU to run SGD algorithm for 5 epochs.
 
+![](/charts/sgd.png)
+
 Max Memory Usage: Max Memory Used while running program
+
+![](/charts/memory.png)
 
 Note: CPU Time is Elapsed by {perf stat} and max memory usage is elapsed by {/usr/bin/time}
 
