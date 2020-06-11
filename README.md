@@ -55,6 +55,6 @@ SGD - Elapsed CPU Time: Time elapsed by CPU to run SGD algorithm for 5 epochs.
 
 Max Memory Usage: Max Memory Used while running program
 
-Note: CPU Time is Elapsed by \textit{perf stat} and max memory usage is elapsed by \textit{/usr/bin/time}
+Note: CPU Time is Elapsed by {perf stat} and max memory usage is elapsed by {/usr/bin/time}
 
 
